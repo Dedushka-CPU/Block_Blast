@@ -1,5 +1,4 @@
 #pragma once
-
 #include <QWidget>
 #include <QVector>
 
@@ -23,3 +22,4 @@ private:
     QVector<Shape> shapes;
     int timerId;
 };
+
