@@ -22,6 +22,7 @@ public:
     bool canPlaceShape(const BlockShape &shape, int row, int col) const;
     bool canPlaceAnyShape(const BlockShape shapes[], ShapeWidget *shapeWidgets[]) const;
     void clearHighlight();
+    void clearBoard();
 
 signals:
     void dropReceived(int shapeId, const QPoint &pos);
