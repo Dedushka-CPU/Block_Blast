@@ -31,6 +31,15 @@ GameBoard::GameBoard(QWidget *parent) : QWidget(parent), animationTimer(nullptr)
     connect(animationTimer, &QTimer::timeout, this, &GameBoard::animateClearing);
 }
 
+void GameBoard::clearBoard() {
+    for (int row = 0; row < 12; ++row) {
+        for (int col = 0; col < 12; ++col) {
+            grid[row][col] = false;
+            cells[row][col]->setStyleSheet("background-color: #2a2a3d; border: 1px solid #3a3a4d;");
+        }
+    }
+}
+
 void GameBoard::placeShape(const BlockShape &shape, int row, int col) {
     for (const auto &cell : shape.cells) {
         int r = row + cell.row;
