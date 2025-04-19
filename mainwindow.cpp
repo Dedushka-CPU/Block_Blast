@@ -137,6 +137,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
         shapeWidgets[i] = nullptr;
     }
     spawnLayout->addStretch();
+    spawnLayout->addStretch();
 
     QPushButton *backButton = new QPushButton("Вернуться в меню", gameScreen);
     backButton->setStyleSheet(buttonStyle);
@@ -154,13 +155,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     screamerScreen->setStyleSheet("background-color: black;");
     QVBoxLayout *screamerLayout = new QVBoxLayout(screamerScreen);
     QLabel *screamerImage = new QLabel(screamerScreen);
-    screamerImage->setPixmap(QPixmap("../../../assets/images/screamer.png").scaled(1000, 800, Qt::KeepAspectRatio));
+    screamerImage->setPixmap(QPixmap("/../../../assets/images/screamer.png").scaled(1000, 800, Qt::KeepAspectRatio));
     screamerImage->setAlignment(Qt::AlignCenter);
     screamerLayout->addWidget(screamerImage);
     screamerLayout->setAlignment(Qt::AlignCenter);
 
     screamSound = new QSoundEffect(this);
-    screamSound->setSource(QUrl("../../../assets/sounds/scream.mp3"));
+    screamSound->setSource(QUrl("/../../../assets/sounds/scream.mp3"));
     screamerTimer = new QTimer(this);
     screamerTimer->setSingleShot(true);
     connect(screamerTimer, &QTimer::timeout, this, &MainWindow::returnToMenu);
@@ -216,15 +217,43 @@ void MainWindow::exitGame() {
 
 void MainWindow::returnToMenu() {
     stackedWidget->setCurrentIndex(1);
+    gameBoard->clearBoard();
 }
 
 void MainWindow::generateShapes() {
     static QVector<QVector<BlockShape::Cell>> shapeTemplates = {
-        {{0,0}}, // 1 клетка
+        {{1,1}}, // 1 клетка
         {{0,0}, {0,1}}, // 2 клетки
+        {{0,0}, {1,0}},
         {{0,0}, {0,1}, {0,2}}, // 3 клетки
+        {{0,0}, {1,0}, {2,0}},
+        {{0,0}, {1,1}, {2,2}},
+        {{0,2}, {1,1}, {2,0}},
+        {{0,0}, {0,1}, {1,1}},
+        {{0,0}, {0,1}, {1,0}},
+        {{0,0}, {1,0}, {1,1}},
+        {{0,1}, {1,0}, {1,1}},
         {{0,0}, {0,1}, {1,0}, {1,1}}, // Квадрат
         {{0,0}, {0,1}, {0,2}, {1,1}}, // T-форма
+        {{0,0}, {0,1}, {1,1}, {2,1}},
+        {{0,0}, {0,1}, {1,0}, {2,0}},
+        {{0,0}, {1,0}, {1,1}, {1,2}},
+        {{1,0}, {1,1}, {1,2}, {0,2}},
+        {{0,1}, {1,1}, {2,1}, {2,0}},
+        {{0,0}, {1,0}, {2,0}, {2,1}},
+        {{0,0}, {0,1}, {1,1}, {1,2}},
+        {{0,2}, {0,1}, {1,1}, {1,0}},
+        {{0,0}, {1,0}, {1,1}, {2,1}},
+        {{0,1}, {1,1}, {1,0}, {2,0}},
+        {{0,0}, {0,1}, {0,2}, {0,3}}, //линия гор 4
+        {{0,0}, {1,0}, {2,0}, {3,0}},  //линия вертикальная 4
+        {{0,0}, {0,1}, {0,2}, {1,2}, {2,2}}, //~|
+        {{0,0}, {0,1}, {0,2}, {1,0}, {2,0}}, //|~
+        {{2,0}, {2,1}, {0,2}, {1,2}, {2,2}}, //|_
+        {{2,0}, {2,1}, {0,0}, {1,0}, {2,2}}, //_|
+        {{2,0}, {2,1}, {2,2}, {2,3}, {2,4}}, //линия гор 5
+        {{0,2}, {1,2}, {2,2}, {3,2}, {4,2}}, //линия вертикальная 5
+        {{0,0}, {0,1}, {0,2}, {1,0}, {1,1}, {1,2}, {2,0}, {2,1}, {2,2}}, //квадрат на 3 клетки
     };
     static QStringList colors = {"#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffeead"};
 
@@ -238,7 +267,7 @@ void MainWindow::generateShapes() {
         int colorIdx = QRandomGenerator::global()->bounded(colors.size());
         shapes[i] = BlockShape(shapeTemplates[shapeIdx], colors[colorIdx], nextShapeId++);
         shapeWidgets[i] = new ShapeWidget(shapes[i], stackedWidget->widget(2));
-        spawnLayout->insertWidget(i, shapeWidgets[i]);
+        spawnLayout->insertWidget(i+1, shapeWidgets[i]);
     }
 }
 
