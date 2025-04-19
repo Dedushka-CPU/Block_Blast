@@ -5,7 +5,7 @@
 #include <QMouseEvent>
 
 ShapeWidget::ShapeWidget(const BlockShape &s, QWidget *parent) : QWidget(parent), shape(s) {
-    setFixedSize(150, 150);
+    setFixedSize(250, 250);
     setAcceptDrops(false);
 }
 
