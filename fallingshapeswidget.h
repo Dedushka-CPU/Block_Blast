@@ -2,6 +2,8 @@
 #include <QWidget>
 #include <QVector>
 
+//это короче класс для фигур которые на фоне падают
+
 class FallingShapesWidget : public QWidget {
     Q_OBJECT
 public:

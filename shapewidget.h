@@ -1,5 +1,5 @@
 #pragma once
-
+//вроде виджет  для фигур
 #include <QWidget>
 #include "blockshape.h"
 

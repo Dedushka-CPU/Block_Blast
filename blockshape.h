@@ -1,6 +1,6 @@
-#ifndef BLOCKSHAPE_H
-#define BLOCKSHAPE_H
+#pragma once
 
+//вроде класс фигур
 #include <QVector>
 #include <QString>
 #include <QDataStream>
@@ -20,4 +20,4 @@ public:
 QDataStream &operator<<(QDataStream &out, const BlockShape::Cell &cell);
 QDataStream &operator>>(QDataStream &in, BlockShape::Cell &cell);
 
-#endif // BLOCKSHAPE_H
+
