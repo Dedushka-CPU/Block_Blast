@@ -283,7 +283,10 @@ void MainWindow::handleDrop(int shapeId, const QPoint &pos) {
                 shapeWidgets[i] = nullptr;
 
                 // Начисляем очки за размещение
-                updateScore(10);
+                int cubeCount = shapes[i].cells.size(); // Предполагается, что shapes[i] хранит QVector<Cell>
+                // Начисляем очки: 10 очков за каждый кубик
+                updateScore(cubeCount * 10);
+                //updateScore(10);
 
                 // Проверяем конец игры
                 bool allPlaced = true;
