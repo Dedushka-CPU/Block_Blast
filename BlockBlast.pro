@@ -9,19 +9,19 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    blockshape.cpp \
-    fallingshapeswidget.cpp \
-    gameboard.cpp \
+    source/blockshape.cpp \
+    source/fallingshapeswidget.cpp \
+    source/gameboard.cpp \
     main.cpp \
-    mainwindow.cpp \
-    shapewidget.cpp
+    source/mainwindow.cpp \
+    source/shapewidget.cpp
 
 HEADERS += \
-    blockshape.h \
-    fallingshapeswidget.h \
-    gameboard.h \
-    mainwindow.h \
-    shapewidget.h
+    headers/blockshape.h \
+    headers/fallingshapeswidget.h \
+    headers/gameboard.h \
+    headers/mainwindow.h \
+    headers/shapewidget.h
 
 
 
