@@ -21,12 +21,14 @@ public:
     void placeShape(const BlockShape &shape, int row, int col);
     bool canPlaceShape(const BlockShape &shape, int row, int col) const;
     bool canPlaceAnyShape(const BlockShape shapes[], ShapeWidget *shapeWidgets[]) const;
+    bool canPlaceShapeOnTheBoard(const BlockShape &shape) const;
     void clearHighlight();
     void clearBoard();
 
 signals:
     void dropReceived(int shapeId, const QPoint &pos);
     void scoreUpdated(int points);
+    void linesCleared();
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event) override;
@@ -50,3 +52,4 @@ private:
 };
 
 #endif // GAMEBOARD_H
+
