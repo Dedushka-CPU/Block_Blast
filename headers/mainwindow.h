@@ -10,6 +10,8 @@
 #include "fallingshapeswidget.h"
 #include "gameboard.h"
 #include "shapewidget.h"
+#include <QResizeEvent>
+#include <QMediaPlayer>
 
 class MainWindow : public QMainWindow {
     Q_OBJECT
@@ -23,7 +25,11 @@ private slots:
     void returnToMenu();
     void handleDrop(int shapeId, const QPoint &pos);
     void updateScore(int points);
+    void updateShapeColors();
     void endGame();
+
+protected:
+    void resizeEvent(QResizeEvent *event) override;
 
 private:
     void generateShapes();
@@ -34,10 +40,15 @@ private:
     BlockShape shapes[3];
     QHBoxLayout *spawnLayout;
     QLabel *scoreLabel;
-    QSoundEffect *screamSound;
+    QMediaPlayer *screamSound;
     QTimer *screamerTimer;
     int nextShapeId;
     int score;
+
+
+    FallingShapesWidget *gameBackground;
+    FallingShapesWidget *menuBackground;
+    FallingShapesWidget *loadingBackground;
 };
 
 #endif // MAINWINDOW_H
