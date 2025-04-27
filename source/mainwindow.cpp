@@ -82,7 +82,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     menuTitle->setGraphicsEffect(menuShadow);
 
     QPushButton *startButton = new QPushButton("Начать игру", mainMenuScreen);
-    QPushButton *settingsButton = new QPushButton("Настройки", mainMenuScreen);
     QPushButton *exitButton = new QPushButton("Выход", mainMenuScreen);
     QString buttonStyle = R"(
         QPushButton {
@@ -102,15 +101,12 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
         }
     )";
     startButton->setStyleSheet(buttonStyle);
-    settingsButton->setStyleSheet(buttonStyle);
     exitButton->setStyleSheet(buttonStyle);
 
     mainMenuLayout->addStretch();
     mainMenuLayout->addWidget(menuTitle);
     mainMenuLayout->addSpacing(40);
     mainMenuLayout->addWidget(startButton);
-    mainMenuLayout->addSpacing(20);
-    mainMenuLayout->addWidget(settingsButton);
     mainMenuLayout->addSpacing(20);
     mainMenuLayout->addWidget(exitButton);
     mainMenuLayout->addStretch();
@@ -186,7 +182,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
 
     // Подключение кнопок
     connect(startButton, &QPushButton::clicked, this, &MainWindow::startGame);
-    connect(settingsButton, &QPushButton::clicked, this, &MainWindow::showSettings);
     connect(exitButton, &QPushButton::clicked, this, &MainWindow::exitGame);
     connect(backButton, &QPushButton::clicked, this, &MainWindow::returnToMenu);
     connect(gameBoard, &GameBoard::dropReceived, this, &MainWindow::handleDrop);
