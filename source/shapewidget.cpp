@@ -5,7 +5,7 @@
 #include <QMouseEvent>
 
 ShapeWidget::ShapeWidget(const BlockShape &s, QWidget *parent) : QWidget(parent), shape(s) {
-    setFixedSize(250, 250);
+    setFixedSize(180, 180);
     setAcceptDrops(false);
 }
 
@@ -26,6 +26,15 @@ void ShapeWidget::paintEvent(QPaintEvent *) {
     }
 }
 
+void ShapeWidget::setColor(const QString &color) {
+    shape.color = color;
+    update();
+}
+
+void ShapeWidget::updateAppearance() {
+    update();
+}
+
 void ShapeWidget::mousePressEvent(QMouseEvent *event) {
     if (event->button() == Qt::LeftButton) {
         QDrag *drag = new QDrag(this);
@@ -42,3 +51,4 @@ void ShapeWidget::mousePressEvent(QMouseEvent *event) {
         drag->exec(Qt::MoveAction);
     }
 }
+
