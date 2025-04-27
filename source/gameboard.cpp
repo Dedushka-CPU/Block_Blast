@@ -79,6 +79,17 @@ bool GameBoard::canPlaceAnyShape(const BlockShape shapes[], ShapeWidget *shapeWi
     return false;
 }
 
+bool GameBoard::canPlaceShapeOnTheBoard(const BlockShape &shape) const {
+    for (int row = 0; row < 12; ++row) {
+        for (int col = 0; col < 12; ++col) {
+            if (canPlaceShape(shape, row, col)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 void GameBoard::clearHighlight() {
     for (int row = 0; row < 12; ++row) {
         for (int col = 0; col < 12; ++col) {
@@ -248,10 +259,12 @@ void GameBoard::finishClearing() {
         cells[row][col]->setStyleSheet("background-color: #2a2a3d; border: 1px solid #3a3a4d;");
     }
 
-    int linesCleared = cellsToClear.size() / 12;
-    if (linesCleared > 0) {
-        emit scoreUpdated(linesCleared * 50);
+    int LinesCleared = cellsToClear.size() / 12;
+    if (LinesCleared > 0) {
+        emit scoreUpdated(LinesCleared * 50);
     }
 
     cellsToClear.clear();
+    emit linesCleared();
 }
+
