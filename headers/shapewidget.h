@@ -8,6 +8,8 @@ class ShapeWidget : public QWidget {
 public:
     ShapeWidget(const BlockShape &shape, QWidget *parent = nullptr);
     const BlockShape &getShape() const;
+    void setColor(const QString &color);
+    void updateAppearance();
 
 protected:
     void paintEvent(QPaintEvent *event) override;
