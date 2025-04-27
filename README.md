@@ -1,7 +1,7 @@
 
 # 🧩 Block Blast  
 **Классическая головоломка, оживающая с Qt5 и C++!**
-[resources/images/logo.png]
+![BlockBlast](https://github.com/Dedushka-CPU/Block_Blast/blob/main/resources/images/icon.jpg)
 ---
 
 ## 🌟 Обзор проекта  
