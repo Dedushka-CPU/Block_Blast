@@ -9,6 +9,7 @@
 #include <QFont>
 #include <QGraphicsDropShadowEffect>
 #include <QRandomGenerator>
+#include <QFileInfo>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), score(0) {
     setWindowTitle("BlockBlast");
@@ -20,7 +21,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
 
     // Экран загрузки
     QWidget *loadingScreen = new QWidget();
-    FallingShapesWidget *loadingBackground = new FallingShapesWidget(loadingScreen);
+    loadingBackground = new FallingShapesWidget(loadingScreen);
     loadingBackground->setGeometry(0, 0, 1000, 800);
     QVBoxLayout *loadingLayout = new QVBoxLayout(loadingScreen);
 
@@ -64,7 +65,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
 
     // Главное меню
     QWidget *mainMenuScreen = new QWidget();
-    FallingShapesWidget *menuBackground = new FallingShapesWidget(mainMenuScreen);
+    menuBackground = new FallingShapesWidget(mainMenuScreen);
     menuBackground->setGeometry(0, 0, 1000, 800);
     QVBoxLayout *mainMenuLayout = new QVBoxLayout(mainMenuScreen);
 
@@ -114,7 +115,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
 
     // Экран игры
     QWidget *gameScreen = new QWidget();
-    FallingShapesWidget *gameBackground = new FallingShapesWidget(gameScreen);
+    gameBackground = new FallingShapesWidget(gameScreen);
     gameBackground->setGeometry(0, 0, 1000, 800);
     QVBoxLayout *gameLayout = new QVBoxLayout(gameScreen);
 
@@ -128,7 +129,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
 
     QWidget *spawnArea = new QWidget(gameScreen);
     spawnLayout = new QHBoxLayout(spawnArea);
-    spawnLayout->setSpacing(20);
+    spawnLayout->setSpacing(5);
     for (int i = 0; i < 3; ++i) {
         shapeWidgets[i] = nullptr;
     }
@@ -151,13 +152,40 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     screamerScreen->setStyleSheet("background-color: black;");
     QVBoxLayout *screamerLayout = new QVBoxLayout(screamerScreen);
     QLabel *screamerImage = new QLabel(screamerScreen);
-    screamerImage->setPixmap(QPixmap("/../../../assets/images/screamer.png").scaled(1000, 800, Qt::KeepAspectRatio));
+
+    // Загрузка изображения через ресурс Qt
+    qDebug() << "Image resource exists:" << QFileInfo("../../../resources/images/screamer.jpg").exists();
+    QPixmap pixmap("../../../resources/images/screamer.jpg");
+    if (pixmap.isNull()) {
+        qWarning() << "Failed to load screamer image!";
+        screamerImage->setText("Image not found!");
+        screamerImage->setStyleSheet("color: white; font-size: 24px;");
+    } else {
+        screamerImage->setPixmap(pixmap.scaled(1000, 800, Qt::KeepAspectRatio));
+    }
     screamerImage->setAlignment(Qt::AlignCenter);
+    screamerImage->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     screamerLayout->addWidget(screamerImage);
     screamerLayout->setAlignment(Qt::AlignCenter);
 
-    screamSound = new QSoundEffect(this);
-    screamSound->setSource(QUrl("/../../../assets/sounds/scream.mp3"));
+    /*screamSound = new QMediaPlayer(this);
+    screamSound->setVolume(100);
+    QUrl soundUrl("qrc:/sounds/scream.mp3");
+    screamSound->setMedia(soundUrl);
+    if (screamSound->error() != QMediaPlayer::NoError) {
+        qWarning() << "Failed to load scream sound:" << screamSound->errorString();
+    } else {
+        qDebug() << "Scream sound loaded successfully";
+        // Используем сигнал error вместо errorOccurred (для Qt 5)
+        connect(screamSound, static_cast<void (QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
+                this, [](QMediaPlayer::Error error) {
+                    qWarning() << "Media player error:" << error;
+                });
+        // Отслеживание состояния воспроизведения
+        connect(screamSound, &QMediaPlayer::stateChanged, this, [](QMediaPlayer::State state) {
+            qDebug() << "Media player state:" << state;
+        });
+    }*/
     screamerTimer = new QTimer(this);
     screamerTimer->setSingleShot(true);
     connect(screamerTimer, &QTimer::timeout, this, &MainWindow::returnToMenu);
@@ -186,6 +214,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     connect(backButton, &QPushButton::clicked, this, &MainWindow::returnToMenu);
     connect(gameBoard, &GameBoard::dropReceived, this, &MainWindow::handleDrop);
     connect(gameBoard, &GameBoard::scoreUpdated, this, &MainWindow::updateScore);
+    connect(gameBoard, &GameBoard::linesCleared, this, &MainWindow::updateShapeColors);
 }
 
 void MainWindow::startGame() {
@@ -249,8 +278,21 @@ void MainWindow::generateShapes() {
         {{0,0}, {0,1}, {0,2}, {0,3}, {0,4}}, //линия гор 5
         {{0,0}, {1,0}, {2,0}, {3,0}, {4,0}}, //линия вертикальная 5
         {{0,0}, {0,1}, {0,2}, {1,0}, {1,1}, {1,2}, {2,0}, {2,1}, {2,2}}, //квадрат на 3 клетки
+        /*{{0,0}, {0,1}, {0,2}, {0,3}, {0,4}, {0,5}, {0,6}, {0,7}, {0,8}, {0,9}, {0,10},
+            {1,0}, {1,1}, {1,2}, {1,3}, {1,4}, {1,5}, {1,6}, {1,7}, {1,8}, {1,9}, {1,10},
+            {2,0}, {2,1}, {2,2}, {2,3}, {2,4}, {2,5}, {2,6}, {2,7}, {2,8}, {2,9}, {2,10},
+            {3,0}, {3,1}, {3,2}, {3,3}, {3,4}, {3,5}, {3,6}, {3,7}, {3,8}, {3,9}, {3,10},
+            {4,0}, {4,1}, {4,2}, {4,3}, {4,4}, {4,5}, {4,6}, {4,7}, {4,8}, {4,9}, {4,10},
+            {5,0}, {5,1}, {5,2}, {5,3}, {5,4}, {5,5}, {5,6}, {5,7}, {5,8}, {5,9}, {5,10},
+            {6,0}, {6,1}, {6,2}, {6,3}, {6,4}, {6,5}, {6,6}, {6,7}, {6,8}, {6,9}, {6,10},
+            {7,0}, {7,1}, {7,2}, {7,3}, {7,4}, {7,5}, {7,6}, {7,7}, {7,8}, {7,9}, {7,10},
+            {8,0}, {8,1}, {8,2}, {8,3}, {8,4}, {8,5}, {8,6}, {8,7}, {8,8}, {8,9}, {8,10},
+            {9,0}, {9,1}, {9,2}, {9,3}, {9,4}, {9,5}, {9,6}, {9,7}, {9,8}, {9,9}, {9,10},
+            {10,0}, {10,1}, {10,2}, {10,3}, {10,4}, {10,5}, {10,6}, {10,7}, {10,8}, {10,9}, {10,10}}*/
     };
     static QStringList colors = {"#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", "#ffeead"};
+
+    bool allShapesUnplaceable = true; // Флаг для проверки, можно ли разместить хотя бы одну фигуру
 
     for (int i = 0; i < 3; ++i) {
         if (shapeWidgets[i]) {
@@ -258,11 +300,45 @@ void MainWindow::generateShapes() {
             shapeWidgets[i]->deleteLater();
             shapeWidgets[i] = nullptr;
         }
-        int shapeIdx = QRandomGenerator::global()->bounded(shapeTemplates.size());
-        int colorIdx = QRandomGenerator::global()->bounded(colors.size());
-        shapes[i] = BlockShape(shapeTemplates[shapeIdx], colors[colorIdx], nextShapeId++);
+
+        bool canPlace = false;
+        int attempts = 0;
+        const int maxAttempts = 10;
+        BlockShape newShape;
+
+        while (!canPlace && attempts < maxAttempts) {
+            int shapeIdx = QRandomGenerator::global()->bounded(shapeTemplates.size());
+            int colorIdx = QRandomGenerator::global()->bounded(colors.size());
+            newShape = BlockShape(shapeTemplates[shapeIdx], colors[colorIdx], nextShapeId++);
+            canPlace = gameBoard->canPlaceShapeOnTheBoard(newShape);
+            attempts++;
+        }
+
+        if (canPlace) {
+            allShapesUnplaceable = false;
+        }
+
+        shapes[i] = newShape;
         shapeWidgets[i] = new ShapeWidget(shapes[i], stackedWidget->widget(2));
-        spawnLayout->insertWidget(i+1, shapeWidgets[i]);
+        spawnLayout->insertWidget(i + 1, shapeWidgets[i]);
+        shapes[i].changeColor(canPlace);
+        shapeWidgets[i]->setColor(shapes[i].color);
+        shapeWidgets[i]->updateAppearance();
+    }
+
+    if (allShapesUnplaceable) {
+        endGame();
+    }
+}
+
+void MainWindow::updateShapeColors() {
+    for (int j = 0; j < 3; ++j) {
+        if (shapeWidgets[j] && !shapes[j].placed) {
+            bool canPlace = gameBoard->canPlaceShapeOnTheBoard(shapes[j]);
+            shapes[j].changeColor(canPlace);
+            shapeWidgets[j]->setColor(shapes[j].color);
+            shapeWidgets[j]->updateAppearance();
+        }
     }
 }
 
@@ -273,15 +349,16 @@ void MainWindow::handleDrop(int shapeId, const QPoint &pos) {
             int col = pos.x() / 50;
             if (gameBoard->canPlaceShape(shapes[i], row, col)) {
                 gameBoard->placeShape(shapes[i], row, col);
+                shapes[i].placed = true;
                 spawnLayout->removeWidget(shapeWidgets[i]);
                 shapeWidgets[i]->deleteLater();
                 shapeWidgets[i] = nullptr;
 
                 // Начисляем очки за размещение
-                int cubeCount = shapes[i].cells.size(); // Предполагается, что shapes[i] хранит QVector<Cell>
-                // Начисляем очки: 10 очков за каждый кубик
+                int cubeCount = shapes[i].cells.size();
                 updateScore(cubeCount * 10);
-                //updateScore(10);
+
+                updateShapeColors();
 
                 // Проверяем конец игры
                 bool allPlaced = true;
@@ -296,7 +373,19 @@ void MainWindow::handleDrop(int shapeId, const QPoint &pos) {
                 }
 
                 // Проверяем, можно ли разместить оставшиеся фигуры
-                if (!gameBoard->canPlaceAnyShape(shapes, shapeWidgets)) {
+                bool allGray = true;
+                bool hasRemainingShapes = false;
+                for (int j = 0; j < 3; ++j) {
+                    if (shapeWidgets[j] && !shapes[j].placed) {
+                        hasRemainingShapes = true;
+                        if (shapes[j].color != "#808080") {
+                            allGray = false;
+                            break;
+                        }
+                    }
+                }
+
+                if (hasRemainingShapes && allGray && !gameBoard->canPlaceAnyShape(shapes, shapeWidgets)) {
                     endGame();
                     return;
                 }
@@ -306,9 +395,27 @@ void MainWindow::handleDrop(int shapeId, const QPoint &pos) {
     }
 }
 
+
+
 void MainWindow::updateScore(int points) {
     score += points;
     scoreLabel->setText(QString("Счет: %1").arg(score));
+}
+
+void MainWindow::resizeEvent(QResizeEvent *event) {
+    QMainWindow::resizeEvent(event); // Вызов базового класса
+
+    if (gameBackground) {
+        gameBackground->setGeometry(0, 0, event->size().width(), event->size().height());
+    }
+
+    if (menuBackground) {
+        menuBackground->setGeometry(0, 0, event->size().width(), event->size().height());
+    }
+
+    if (loadingBackground) {
+        loadingBackground->setGeometry(0, 0, event->size().width(), event->size().height());
+    }
 }
 
 void MainWindow::endGame() {
@@ -316,3 +423,4 @@ void MainWindow::endGame() {
     stackedWidget->setCurrentIndex(5); // Показываем скример
     screamerTimer->start(4000); // 2 секунды
 }
+
