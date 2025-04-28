@@ -152,40 +152,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     screamerScreen->setStyleSheet("background-color: black;");
     QVBoxLayout *screamerLayout = new QVBoxLayout(screamerScreen);
     QLabel *screamerImage = new QLabel(screamerScreen);
-
-    // Загрузка изображения через ресурс Qt
-    qDebug() << "Image resource exists:" << QFileInfo("../../../resources/images/screamer.jpg").exists();
-    QPixmap pixmap("../../../resources/images/screamer.jpg");
-    if (pixmap.isNull()) {
-        qWarning() << "Failed to load screamer image!";
-        screamerImage->setText("Image not found!");
-        screamerImage->setStyleSheet("color: white; font-size: 24px;");
-    } else {
-        screamerImage->setPixmap(pixmap.scaled(1000, 800, Qt::KeepAspectRatio));
-    }
+    screamerImage->setPixmap(QPixmap("../../../assets/images/screamer.png").scaled(1000, 800, Qt::KeepAspectRatio));
     screamerImage->setAlignment(Qt::AlignCenter);
-    screamerImage->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     screamerLayout->addWidget(screamerImage);
     screamerLayout->setAlignment(Qt::AlignCenter);
 
-    /*screamSound = new QMediaPlayer(this);
-    screamSound->setVolume(100);
-    QUrl soundUrl("qrc:/sounds/scream.mp3");
-    screamSound->setMedia(soundUrl);
-    if (screamSound->error() != QMediaPlayer::NoError) {
-        qWarning() << "Failed to load scream sound:" << screamSound->errorString();
-    } else {
-        qDebug() << "Scream sound loaded successfully";
-        // Используем сигнал error вместо errorOccurred (для Qt 5)
-        connect(screamSound, static_cast<void (QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error),
-                this, [](QMediaPlayer::Error error) {
-                    qWarning() << "Media player error:" << error;
-                });
-        // Отслеживание состояния воспроизведения
-        connect(screamSound, &QMediaPlayer::stateChanged, this, [](QMediaPlayer::State state) {
-            qDebug() << "Media player state:" << state;
-        });
-    }*/
+    screamSound = new QSoundEffect(this);
+    screamSound->setSource(QUrl("../../../assets/sounds/scream.mp3"));
     screamerTimer = new QTimer(this);
     screamerTimer->setSingleShot(true);
     connect(screamerTimer, &QTimer::timeout, this, &MainWindow::returnToMenu);
