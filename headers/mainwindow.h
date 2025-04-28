@@ -40,7 +40,7 @@ private:
     BlockShape shapes[3];
     QHBoxLayout *spawnLayout;
     QLabel *scoreLabel;
-    QMediaPlayer *screamSound;
+    QSoundEffect *screamSound;
     QTimer *screamerTimer;
     int nextShapeId;
     int score;
