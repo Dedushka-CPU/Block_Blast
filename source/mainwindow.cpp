@@ -393,7 +393,7 @@ void MainWindow::resizeEvent(QResizeEvent *event) {
 
 void MainWindow::endGame() {
     screamSound->play();
-    stackedWidget->setCurrentIndex(5); // Показываем скример
+    stackedWidget->setCurrentIndex(3); // Показываем скример
     screamerTimer->start(4000); // 2 секунды
 }
 
