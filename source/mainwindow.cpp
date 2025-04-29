@@ -152,13 +152,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     screamerScreen->setStyleSheet("background-color: black;");
     QVBoxLayout *screamerLayout = new QVBoxLayout(screamerScreen);
     QLabel *screamerImage = new QLabel(screamerScreen);
-    screamerImage->setPixmap(QPixmap("../../../assets/images/screamer.png").scaled(1000, 800, Qt::KeepAspectRatio));
+    screamerImage->setPixmap(QPixmap("../../resources/images/screamer.jpg").scaled(1000, 800, Qt::KeepAspectRatio));
     screamerImage->setAlignment(Qt::AlignCenter);
     screamerLayout->addWidget(screamerImage);
     screamerLayout->setAlignment(Qt::AlignCenter);
 
     screamSound = new QSoundEffect(this);
-    screamSound->setSource(QUrl("../../../assets/sounds/scream.mp3"));
+    screamSound->setSource(QUrl::fromLocalFile("../../resources/sounds/screamer.wav"));
     screamerTimer = new QTimer(this);
     screamerTimer->setSingleShot(true);
     connect(screamerTimer, &QTimer::timeout, this, &MainWindow::returnToMenu);
