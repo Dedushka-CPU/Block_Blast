@@ -37,29 +37,15 @@
 1. Установите зависимости:  
    ```bash
    sudo apt update
-   sudo apt install qtcreator qt5-default qtmultimedia5-dev
-   ```
-   Для Fedora:  
-   ```bash
-   sudo dnf install qt5-qtmultimedia-devel qt-creator
+   sudo apt install qtbase5-dev qt5-make
+   sudo apt install qtmultimedia5-dev
    ```
 2. Склонируйте репозиторий:  
    ```bash
    git clone https://github.com/Dedushka-CPU/Block_Blast
    ```
 3. Откройте `BlockBlast.pro` в Qt Creator и соберите проект.  
-4. (Опционально) Используйте [AppImage](https://github.com/Dedushka-CPU/Block_Blast/releases) для запуска без сборки.  
-
-### macOS  (не точно,не проверяли)
-1. Установите Qt5 через Homebrew:  
-   ```bash
-   brew install qt@5
-   ```
-2. Склонируйте репозиторий:  
-   ```bash
-   git clone https://github.com/Dedushka-CPU/Block_Blast
-   ```
-3. Откройте `BlockBlast.pro` в Qt Creator и соберите проект.  
+4. Запустите.  
 
 ---
 
@@ -109,7 +95,7 @@ BlockBlast/
 *Создано с ❤️ для любителей головоломок!*  
 
 ---
-## Компоненты игры (ло комита Арины)
+## Компоненты игры
 
 Ниже подробно описаны ключевые классы, составляющие игру **BlockBlast**, их назначение, используемые библиотеки Qt, причины их выбора, а также важные методы и их функциональность.
 
