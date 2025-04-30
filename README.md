@@ -70,6 +70,7 @@ BlockBlast/
 ├── main.cpp                    # Точка входа
 ├── BlockBlast.pro              # Файл сборки qmake
 └── README.md                   # Документация
+└── resources.qrc                  # Файл qt с ресурсами
 ```
 
 ---
