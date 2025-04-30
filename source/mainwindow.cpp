@@ -113,7 +113,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     mainMenuLayout->addStretch();
     mainMenuLayout->setAlignment(Qt::AlignCenter);
 
-    // Экран игры
+    // Game screen
     QWidget *gameScreen = new QWidget();
     gameBackground = new FallingShapesWidget(gameScreen);
     gameBackground->setGeometry(0, 0, 1000, 800);
@@ -136,14 +136,16 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     spawnLayout->addStretch();
     spawnLayout->addStretch();
 
-    QPushButton *backButton = new QPushButton("Вернуться в меню", gameScreen);
-    backButton->setStyleSheet(buttonStyle);
+    QPushButton *backButton = new QPushButton(gameScreen);
+backButton->setIcon(QIcon(":/resources/images/home.png"));
+    backButton->setStyleSheet(buttonStyle + "QPushButton { min-width: 50px; padding: 8px; }"); // Smaller size for icon button
+    backButton->setFixedSize(50, 50); // Fixed size for the button
+    backButton->setGeometry(950, 10, 40, 40); // Position in top-right corner (adjusted for 1000x800 window)
 
     gameLayout->addStretch();
     gameLayout->addWidget(scoreLabel);
     gameLayout->addWidget(gameBoard, 0, Qt::AlignCenter);
     gameLayout->addWidget(spawnArea);
-    gameLayout->addWidget(backButton);
     gameLayout->addStretch();
     gameLayout->setAlignment(Qt::AlignCenter);
 
@@ -152,13 +154,13 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), nextShapeId(0), s
     screamerScreen->setStyleSheet("background-color: black;");
     QVBoxLayout *screamerLayout = new QVBoxLayout(screamerScreen);
     QLabel *screamerImage = new QLabel(screamerScreen);
-    screamerImage->setPixmap(QPixmap("../../resources/images/screamer.jpg").scaled(1000, 800, Qt::KeepAspectRatio));
+    screamerImage->setPixmap(QPixmap(":/resources/images/screamer.jpg").scaled(1000, 800, Qt::KeepAspectRatio));
     screamerImage->setAlignment(Qt::AlignCenter);
     screamerLayout->addWidget(screamerImage);
     screamerLayout->setAlignment(Qt::AlignCenter);
 
     screamSound = new QSoundEffect(this);
-    screamSound->setSource(QUrl::fromLocalFile("../../resources/sounds/screamer.wav"));
+    screamSound->setSource(QUrl("qrc:/resources/sounds/screamer.wav"));
     screamerTimer = new QTimer(this);
     screamerTimer->setSingleShot(true);
     connect(screamerTimer, &QTimer::timeout, this, &MainWindow::returnToMenu);
