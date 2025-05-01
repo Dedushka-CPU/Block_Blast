@@ -44,8 +44,20 @@
    ```bash
    git clone https://github.com/Dedushka-CPU/Block_Blast
    ```
-3. Откройте `BlockBlast.pro` в Qt Creator и соберите проект.  
-4. Запустите.  
+3. Откройте терминал и зайдите в папку проекта.  
+   ```bash
+   cd BlockBlast
+   ```
+4. Введите следующие команды.
+   ```bash
+   qmake BlockBlast.pro
+   ```  
+   ```bash
+   make
+   ```
+   ```bash
+   ./BlockBlast
+   ```
 
 ---
 
