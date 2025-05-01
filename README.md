@@ -59,9 +59,9 @@
    ./BlockBlast
    ```
 ### Linux (Сборка через Qt Creator)
-   Откройте BlockBlast.pro
-   Нажмите на Run(или Ctrl+R)
-   При необходимости установите multidedia
+1. Откройте BlockBlast.pro
+2. Нажмите на Run(или Ctrl+R)
+3. При необходимости установите multidedia
    ```bash
    sudo apt update
    sudo apt install qtbase5-dev qt5-make
