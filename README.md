@@ -44,7 +44,7 @@
    ```bash
    git clone https://github.com/Dedushka-CPU/Block_Blast
    ```
-3. Откройте терминал и зайдите в папку проекта.  
+3. Зайдите в папку проекта.  
    ```bash
    cd BlockBlast
    ```
@@ -58,7 +58,15 @@
    ```bash
    ./BlockBlast
    ```
-
+### Linux (Сборка через Qt Creator)
+   Откройте BlockBlast.pro
+   Нажмите на Run(или Ctrl+R)
+   При необходимости установите multidedia
+   ```bash
+   sudo apt update
+   sudo apt install qtbase5-dev qt5-make
+   sudo apt install qtmultimedia5-dev
+   ```
 ---
 
 ## 📂 Структура проекта  
